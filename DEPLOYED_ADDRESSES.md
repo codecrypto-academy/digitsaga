@@ -1,6 +1,5 @@
 # Deployed Contract Addresses
-
-**Last Deployment:** Tue Oct 14 18:44:31 CEST 2025
+**Version**: 1.1.1 | **Last Updated**: Mar-02-2026 | **Status**: Production-ready | **Last Deployment:** Tue Oct 14 18:44:31 CEST 2025
 
 ## Network: Localhost (Anvil)
 **Chain ID:** 31337

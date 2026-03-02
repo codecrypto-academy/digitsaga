@@ -1,4 +1,5 @@
 # Deployment Guide
+**Version**: 1.1.1 | **Last Updated**: Mar-02-2026 | **Status**: Production-ready
 
 ## Prerequisites
 
@@ -65,10 +66,10 @@ Edit `.env.local` and add all contract addresses.
 
 ```bash
 npm install
-npm run dev -- -p 3001
+npm run dev -- -p 3100
 ```
 
-Open [http://localhost:3001](http://localhost:3001)
+Open [http://localhost:3100](http://localhost:3100)
 
 ## 3. Initial Setup
 

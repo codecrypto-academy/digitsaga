@@ -1,4 +1,5 @@
 # Quick Start Guide
+**Version**: 1.1.1 | **Last Updated**: Mar-02-2026 | **Status**: Production-ready
 
 ## Prerequisites
 
@@ -68,7 +69,7 @@ npm install  # First time only
 npm run dev -- -p 3001
 ```
 
-Open [http://localhost:3001](http://localhost:3001)
+Open [http://localhost:3001](http://localhost:3100)
 
 ### 4. Setup MetaMask
 
@@ -136,7 +137,7 @@ This mints 1000 EURT (1000000000 = 1000 * 10^6 decimals) to the customer account
 ### As Customer (Account #2)
 
 1. Switch to Account #2 in MetaMask
-2. Open **web-customer** ([localhost:3001](http://localhost:3001))
+2. Open **web-customer** ([localhost:3001](http://localhost:3100))
 3. Browse products
 4. Add to cart
 5. Checkout (approve EURT spending, then pay)

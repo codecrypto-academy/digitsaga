@@ -1,4 +1,5 @@
 # E-Commerce Blockchain System
+**Version**: 1.1.1 | **Last Updated**: Mar-02-2026 | **Status**: Production-ready
 
 Sistema de comercio electrónico descentralizado usando Ethereum, con tokens estables (EURT) para pagos.
 
@@ -242,7 +243,7 @@ Aplicación Next.js para la administración del e-commerce.
 
 ### 2.2 Tecnologías
 
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 15 (App Router)
 - **Blockchain**: ethers.js v6
 - **UI**: TailwindCSS + shadcn/ui
 - **Storage**: IPFS via Pinata
@@ -312,7 +313,7 @@ Aplicación Next.js para clientes finales.
 
 ### 3.2 Tecnologías
 
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 15 (App Router)
 - **Blockchain**: ethers.js v6
 - **Payments**: Stripe + EURT
 - **UI**: TailwindCSS + shadcn/ui
@@ -497,3 +498,5 @@ Ver [SCRIPTS.md](SCRIPTS.md) para documentación completa de scripts.
 - [DEPLOYMENT.md](DEPLOYMENT.md) - Guía de deployment manual
 - [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Solución de problemas
 - [DEPLOYED_ADDRESSES.md](DEPLOYED_ADDRESSES.md) - Direcciones de contratos (auto-generado)
+
+---

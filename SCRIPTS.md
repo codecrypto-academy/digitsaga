@@ -1,4 +1,5 @@
 # Deployment Scripts Documentation
+**Version**: 1.1.1 | **Last Updated**: Mar-02-2026 | **Status**: Production-ready
 
 This project includes automated scripts to simplify deployment and testing.
 
@@ -143,7 +144,7 @@ npm run dev
 # Terminal 4: Start web-customer
 cd web-customer
 npm install  # First time only
-npm run dev -- -p 3001
+npm run dev -- -p 3100
 ```
 
 ### Reset & Redeploy

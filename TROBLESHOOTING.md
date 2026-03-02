@@ -1,4 +1,5 @@
 # Troubleshooting Guide
+**Version**: 1.1.1 | **Last Updated**: Mar-02-2026 | **Status**: Production-ready
 
 ## JSON Import Issues with Next.js
 
@@ -157,7 +158,7 @@ forge script script/Deploy.s.sol --rpc-url http://localhost:8545 --broadcast
 
 # Restart apps
 cd web-admin && npm run dev
-cd web-customer && npm run dev -- -p 3001
+cd web-customer && npm run dev -- -p 3100
 ```
 
 ## Getting Help
@@ -170,4 +171,5 @@ cd web-customer && npm run dev -- -p 3001
    cd sc-ecommerce
    forge test -vvv
    ```
+
 ---

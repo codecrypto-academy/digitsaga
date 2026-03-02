@@ -1,4 +1,5 @@
 # ARQUITECTURA DEL SISTEMA E-COMMERCE BLOCKCHAIN
+**Version**: 1.0.1 | **Last Updated**: Mar-02-2026 | **Status**: Production-ready
 
 ## 1. ARQUITECTURA GENERAL DEL SISTEMA
 

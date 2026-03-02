@@ -1,14 +1,10 @@
 # E-Commerce Blockchain - Project Summary
-
-**Version**: 1.0.1 | **Last Updated**: Feb-01-2026 | **Status**: ✅ Production-ready
-
----
+**Version**: 1.1.1 | **Last Updated**: Mar-02-2026 | **Status**: Production-ready
 
 ## Project Complete!
 
 This project implements a complete decentralized e-commerce system on Ethereum using smart contracts, with Next.js web applications for both admin and customers.
 
----
 
 ## ✅ Implemented Components
 
@@ -150,7 +146,7 @@ web-customer/
 - ✅ `DEPLOYED_ADDRESSES.md` - Addresses (auto-generated)
 - ✅ `PROJECT_SUMMARY.md` - This file
 
----
+
 
 ## How to Use
 
@@ -313,8 +309,8 @@ cd web-customer && npm run dev -- -p 3001
 - **Anvil**: Local node
 
 ### Frontend
-- **Next.js**: 15.5.4
-- **React**: 19.1.0
+- **Next.js**: 16.1.1
+- **React**: 19.2.3
 - **TypeScript**: ^5
 - **ethers.js**: 6
 - **mipd**: Latest
@@ -330,7 +326,7 @@ cd web-customer && npm run dev -- -p 3001
 ## Project Structure
 ```text
 30_eth_database_ecommerce/
-├── sc-ecommerce/           # Smart contracts (Foundry)
+├── sc-ecommerce/          # Smart contracts (Foundry)
 │   ├── src/               # Contracts
 │   ├── test/              # Tests
 │   ├── script/            # Deployment scripts

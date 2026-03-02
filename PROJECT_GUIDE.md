@@ -1,6 +1,5 @@
 # E-Commerce Project with Blockchain and Stablecoins
-
-**Version**: 1.0.1 | **Last Updated**: Feb-01-2026 | **Status**: ✅ Production-ready
+**Version**: 1.1.1 | **Last Updated**: Mar-02-2026 | **Status**: Production-ready
 
 ## Overview
 This project is a complete blockchain-based e‑commerce system that includes:
@@ -42,7 +41,7 @@ This project is a complete blockchain-based e‑commerce system that includes:
 - **Stripe**: Fiat payment processing
 - **ERC20**: Token standard for EuroToken
 
----
+
 
 ## Parte 1: Smart Contract - EuroToken (Stablecoin)
 
@@ -191,7 +190,7 @@ stablecoin/payment-gateway/
 
 ### URL Parameters
 ```
-http://localhost:6002/?
+http://localhost:6200/?
   merchant_address=0x...      # Merchant wallet address
   amount=100.50               # Amount in EUR
   invoice=INV-001             # Invoice ID
@@ -222,7 +221,7 @@ http://localhost:6002/?
     - Automatically redirect after successful payment
     - Pass result parameters back to the merchant
 
----
+
 
 ## Part 4: E‑commerce Smart Contract
 
@@ -457,7 +456,7 @@ View payment status
 View invoice details
 
 ### Purchase Flow
-```
+```text
 1. User browses products
    ↓
 2. Adds products to cart
@@ -578,7 +577,7 @@ NEXT_PUBLIC_ECOMMERCE_CONTRACT_ADDRESS=0x...NEXT_PUBLIC_EUROTOKEN_CONTRACT_ADDRE
 - Web Admin: http://localhost:6300
 - Web Customer: http://localhost:6400
 
----
+
 
 ## Part 8: End‑to‑End System Testing
 
@@ -593,13 +592,13 @@ NEXT_PUBLIC_ECOMMERCE_CONTRACT_ADDRESS=0x...NEXT_PUBLIC_EUROTOKEN_CONTRACT_ADDRE
 ```
 
 2. **Buy Tokens**
-Go to http://localhost:6001
+Go to http://localhost:6100
 Connect MetaMask
 Buy 1000 EURT with a test card
 Check balance in MetaMask
 
 3. **Register Company (Admin)**
-Go to http://localhost:6003
+Go to http://localhost:6300
 Connect with company account
 Register company “My Store”
 - Add products:
@@ -607,7 +606,7 @@ Register company “My Store”
     Product B: €25, Stock: 50
 
 4. **Buy Products (Customer)**
-Go to http://localhost:6004
+Go to http://localhost:6400
 View product catalog
 Connect customer wallet
 Add Product A (qty: 2) to cart
@@ -626,12 +625,12 @@ Confirm processPayment transaction
 See successful payment confirmation
 
 6. **Verify Invoice**
-Redirects to http://localhost:6004/orders
+Redirects to http://localhost:6400/orders
 See invoice marked as “Paid”
 View purchase details
 
 7. **Verify Company (Admin)**
-Go back to http://localhost:6003
+Go back to http://localhost:6300
 See invoice in company panel
 Verify received token balance
 - Verify updated stock:
@@ -658,7 +657,7 @@ Cancel payment at gateway
 Change account in MetaMask
 Refresh page during the process
 
----
+
 
 ## Recursos Adicionales
 
@@ -810,4 +809,37 @@ Business metrics
 - [x] Blockchain testing
 - [x] Creating UX for crypto applications
 
----
+## Git Repository Setup
+
+Create (or clone) a new git repository specifically for this project. For best practices and to enable structured workflow, use a dedicated branch for your development work.
+
+### Steps:
+
+1. **Clone the Repository** (recommended if you have access):
+    ```bash
+    git clone git@github.com:codecrypto-academy/digitsaga.git
+    cd digitsaga
+    ```
+
+2. **Set Up SSH for GitHub**:
+    - Ensure you have an SSH key added to your GitHub account. [GitHub instructions here.](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/about-ssh)
+    - You can verify SSH with:
+      ```bash
+      ssh -T git@github.com
+      ```
+
+3. **Create a Feature Branch**:
+    ```bash
+    git checkout -b <your-feature-branch>
+    ```
+
+4. **Commit and Push Changes**:
+    ```bash
+    git add .
+    git commit -m "Your descriptive commit message"
+    git push origin <your-feature-branch>
+    ```
+
+> **Note:** All commits and pushes should use SSH authentication to communicate with `git@github.com:codecrypto-academy/digitsaga.git`.
+
+Now you are ready to start contributing to the project.
