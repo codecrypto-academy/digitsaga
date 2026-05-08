@@ -65,6 +65,9 @@ contract MinimalForwarder {
         require(req.from != address(0), "Invalid from address");
         require(req.to != address(0), "Invalid to address");
         
+        // Require non-empty data for meta-transactions
+        require(req.data.length > 0, "Empty data");
+        
         // Permitimos que la cuenta haya hecho otras operaciones, 
         // pero el nonce debe ser igual al nonce actual
         uint256 currentNonce = _nonces[req.from];
@@ -75,9 +78,14 @@ contract MinimalForwarder {
         
         _nonces[req.from] = currentNonce + 1;
         
-        (bool success, ) = req.to.call{value: req.value}(abi.encodePacked(req.data, req.from));
+        (bool success, ) = req.to.call{value: req.value, gas: req.gas}(abi.encodePacked(req.data, req.from));
         require(success, "Call failed");
     }
+
+    /**
+     * @dev Receive plain ETH transfers (no data)
+     */
+    receive() external payable {}
 
     /**
      * @dev Recover the signer from a hash and signature

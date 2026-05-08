@@ -1,11 +1,5 @@
 import { ethers } from 'ethers';
 
-export interface WindowWithEthereum extends Window {
-  ethereum?: any;
-}
-
-declare const window: WindowWithEthereum;
-
 export async function connectWallet(): Promise<string | null> {
   if (typeof window.ethereum === 'undefined') {
     alert('MetaMask is not installed. Please install MetaMask to use this app.');
@@ -16,7 +10,7 @@ export async function connectWallet(): Promise<string | null> {
     const accounts = await window.ethereum.request({
       method: 'eth_requestAccounts'
     });
-    return accounts[0];
+    return (accounts as string[])[0];
   } catch (error) {
     console.error('Error connecting wallet:', error);
     return null;
@@ -66,9 +60,10 @@ export async function switchNetwork(chainId: number): Promise<boolean> {
       params: [{ chainId: `0x${chainId.toString(16)}` }],
     });
     return true;
-  } catch (error: any) {
+  } catch (error: unknown) {
     // This error code indicates that the chain has not been added to MetaMask
-    if (error.code === 4902) {
+    const err = error as { code?: number };
+    if (err.code === 4902) {
       console.error('Network not added to MetaMask');
     }
     console.error('Error switching network:', error);

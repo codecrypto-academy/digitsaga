@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ethers } from 'ethers';
 import { getProvider, getSigner } from '@/lib/web3';
 import { getDAOContract, getForwarderContract, VoteType, Proposal, DAO_CONTRACT_ADDRESS } from '@/lib/contracts';
@@ -135,7 +136,7 @@ export default function ProposalList() {
         const { request: signedRequest, signature } = await signMetaTxRequest(
           signer,
           forwarderContract,
-          request
+          { ...request, from: userAddress }
         );
 
         // Send to relayer
@@ -171,16 +172,19 @@ export default function ProposalList() {
 
       // Reload proposals
       setTimeout(loadProposals, 2000);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error voting:', err);
-      alert(err.message || 'Failed to vote');
+      alert((err as Error).message || 'Failed to vote');
     } finally {
       setVotingProposal(null);
     }
   };
 
   const formatDate = (timestamp: bigint) => {
-    return new Date(Number(timestamp) * 1000).toLocaleString();
+    const date = new Date(Number(timestamp) * 1000);
+    const localTime = date.toLocaleString();
+    const timezone = date.toTimeString().split(' ')[0];
+    return `${localTime} (${timezone})`;
   };
 
   const getProposalStatus = (proposal: Proposal) => {
@@ -230,35 +234,74 @@ export default function ProposalList() {
     return `${minutes}m remaining`;
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.4, ease: 'easeOut' }
+    }
+  };
+
+  const progressVariants = {
+    initial: { width: 0 },
+    animate: { width: 'var(--progress)', transition: { duration: 0.6, ease: 'easeOut' } }
+  };
+
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6"
+      >
         <h2 className="text-2xl font-bold mb-4 dark:text-white">Proposals</h2>
         <div className="text-center py-8 text-gray-500 dark:text-gray-400">Loading proposals...</div>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-      <div className="flex items-center justify-between mb-4">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6"
+    >
+      <motion.div 
+        className="flex items-center justify-between mb-4"
+        variants={cardVariants}
+      >
         <h2 className="text-2xl font-bold dark:text-white">Proposals</h2>
-        <div className="flex items-center gap-2">
+        <motion.div 
+          className="flex items-center gap-2"
+          whileTap={{ scale: 0.98 }}
+        >
           <input
             type="checkbox"
-            id="useGaslessVoting"
-            checked={useGasless}
             onChange={(e) => setUseGasless(e.target.checked)}
             className="w-4 h-4"
           />
           <label htmlFor="useGaslessVoting" className="text-sm text-gray-700 dark:text-gray-300">
             Gasless voting
           </label>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {blockchainTime > 0 && (
-        <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg"
+        >
           <div className="text-sm text-gray-700 dark:text-gray-300">
             <span className="font-semibold">⏰ Blockchain Time: </span>
             <span className="font-mono text-blue-600 dark:text-blue-400">
@@ -268,21 +311,29 @@ export default function ProposalList() {
               (Timestamp: {blockchainTime})
             </span>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {proposals.length === 0 ? (
-        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center py-8 text-gray-500 dark:text-gray-400"
+        >
           No proposals yet. Create the first one!
-        </div>
+        </motion.div>
       ) : (
-        <div className="space-y-4">
+        <motion.div className="space-y-4">
           {proposals.map((proposal) => {
             const status = getProposalStatus(proposal);
             const totalVotes = proposal.forVotes + proposal.againstVotes + proposal.abstainVotes;
 
             return (
-              <div key={proposal.id.toString()} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 dark:bg-gray-700/30">
+              <motion.div 
+                key={proposal.id.toString()} 
+                variants={cardVariants}
+                className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 dark:bg-gray-700/30"
+              >
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <h3 className="font-bold text-lg dark:text-white">Proposal #{proposal.id.toString()}</h3>
@@ -372,46 +423,56 @@ export default function ProposalList() {
                 </div>
 
                 {userAddress && proposal.userVote !== undefined && (
-                  <div className="mb-3 p-2 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mb-3 p-2 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg"
+                  >
                     <div className="text-sm">
                       <span className="text-gray-600 dark:text-gray-400">Your vote: </span>
                       <span className={`font-semibold ${getVoteTypeLabel(proposal.userVote).color}`}>
                         {getVoteTypeLabel(proposal.userVote).label}
                       </span>
                     </div>
-                  </div>
+                  </motion.div>
                 )}
 
                 {canVote(proposal) && (
-                  <div className="flex gap-2">
-                    <button
+                  <motion.div className="flex gap-2">
+                    <motion.button
                       onClick={() => handleVote(Number(proposal.id), VoteType.FOR)}
                       disabled={votingProposal === Number(proposal.id)}
+                      whileHover={votingProposal === Number(proposal.id) ? {} : { backgroundColor: '#16a34a' }}
+                      whileTap={votingProposal === Number(proposal.id) ? {} : { scale: 0.95 }}
                       className="flex-1 px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-gray-400 text-sm"
                     >
                       Vote For
-                    </button>
-                    <button
+                    </motion.button>
+                    <motion.button
                       onClick={() => handleVote(Number(proposal.id), VoteType.AGAINST)}
                       disabled={votingProposal === Number(proposal.id)}
+                      whileHover={votingProposal === Number(proposal.id) ? {} : { backgroundColor: '#dc2626' }}
+                      whileTap={votingProposal === Number(proposal.id) ? {} : { scale: 0.95 }}
                       className="flex-1 px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:bg-gray-400 text-sm"
                     >
                       Vote Against
-                    </button>
-                    <button
+                    </motion.button>
+                    <motion.button
                       onClick={() => handleVote(Number(proposal.id), VoteType.ABSTAIN)}
                       disabled={votingProposal === Number(proposal.id)}
+                      whileHover={votingProposal === Number(proposal.id) ? {} : { backgroundColor: '#4b5563' }}
+                      whileTap={votingProposal === Number(proposal.id) ? {} : { scale: 0.95 }}
                       className="flex-1 px-3 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 disabled:bg-gray-400 text-sm"
                     >
                       Abstain
-                    </button>
-                  </div>
+                    </motion.button>
+                  </motion.div>
                 )}
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

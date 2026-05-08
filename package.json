@@ -1,0 +1,9 @@
+{
+  "name": "dao-voting-platform",
+  "version": "0.1.2",
+  "description": "Full-stack DAO voting application with gasless transactions using EIP-2771 meta-transactions",
+  "private": true,
+  "devDependencies": {
+    "@types/estree": "^1.0.8"
+  }
+}

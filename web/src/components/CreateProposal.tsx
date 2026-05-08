@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { ethers } from 'ethers';
 import { getSigner } from '@/lib/web3';
 import { getDAOContract, getForwarderContract, DAO_CONTRACT_ADDRESS } from '@/lib/contracts';
@@ -138,12 +139,58 @@ export default function CreateProposal({ onProposalCreated }: CreateProposalProp
     }
   };
 
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-bold mb-4 dark:text-white">Create Proposal</h2>
+  const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.4, ease: 'easeOut' }
+  }
+};
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
+const inputVariants = {
+  focus: { scale: 1.01, borderColor: '#3b82f6' }
+};
+
+return (
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6"
+    >
+      <motion.h2 
+        className="text-2xl font-bold mb-2 dark:text-white"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.1, duration: 0.3 }}
+      >
+        Create Proposal
+      </motion.h2>
+      
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="inline-flex items-center gap-1.5 mb-4"
+      >
+        <span className="px-2 py-0.5 text-xs font-medium bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full">
+          New
+        </span>
+        <span className="text-xs text-gray-500 dark:text-gray-400">
+          Submit a new funding request
+        </span>
+      </motion.div>
+
+      <motion.form 
+          onSubmit={handleSubmit} 
+          className="space-y-4"
+          variants={containerVariants}
+        >
+        <motion.div
+          variants={inputVariants}
+          whileFocus="focus"
+        >
           <label className="block text-sm font-medium mb-1 dark:text-gray-200">
             Recipient Address
           </label>
@@ -153,11 +200,11 @@ export default function CreateProposal({ onProposalCreated }: CreateProposalProp
             onChange={(e) => setRecipient(e.target.value)}
             placeholder="0x..."
             required
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 transition-colors"
           />
-        </div>
+        </motion.div>
 
-        <div>
+        <motion.div variants={inputVariants} whileFocus="focus">
           <label className="block text-sm font-medium mb-1 dark:text-gray-200">
             Amount (ETH)
           </label>
@@ -168,11 +215,11 @@ export default function CreateProposal({ onProposalCreated }: CreateProposalProp
             onChange={(e) => setAmount(e.target.value)}
             placeholder="0.0"
             required
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 transition-colors"
           />
-        </div>
+        </motion.div>
 
-        <div>
+        <motion.div variants={inputVariants} whileFocus="focus">
           <label className="block text-sm font-medium mb-1 dark:text-gray-200">
             Voting Duration (days)
           </label>
@@ -182,11 +229,11 @@ export default function CreateProposal({ onProposalCreated }: CreateProposalProp
             onChange={(e) => setDuration(e.target.value)}
             min="1"
             required
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 transition-colors"
           />
-        </div>
+        </motion.div>
 
-        <div>
+        <motion.div variants={inputVariants} whileFocus="focus">
           <label className="block text-sm font-medium mb-1 dark:text-gray-200">
             Description
           </label>
@@ -196,17 +243,25 @@ export default function CreateProposal({ onProposalCreated }: CreateProposalProp
             placeholder="Describe the proposal..."
             required
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 transition-colors"
           />
-        </div>
+        </motion.div>
 
         {error && (
-          <div className="p-3 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-400 rounded">
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="p-3 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-400 rounded"
+          >
             {error}
-          </div>
+          </motion.div>
         )}
 
-        <div className="flex items-center gap-3 mb-3">
+        <motion.div 
+          className="flex items-center gap-3 mb-3"
+          whileTap={{ scale: 0.98 }}
+        >
           <input
             type="checkbox"
             id="useGasless"
@@ -217,20 +272,34 @@ export default function CreateProposal({ onProposalCreated }: CreateProposalProp
           <label htmlFor="useGasless" className="text-sm text-gray-700 dark:text-gray-300">
             Use gasless transaction (relayer pays gas)
           </label>
-        </div>
+        </motion.div>
 
-        <button
+        <motion.button
           type="submit"
           disabled={loading || submitting}
+          whileHover={loading || submitting ? {} : { backgroundColor: '#16a34a' }}
+          whileTap={loading || submitting ? {} : { scale: 0.98 }}
           className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
         >
-          {loading || submitting ? 'Creating Proposal...' : useGasless ? 'Create Proposal (Gasless)' : 'Create Proposal (Pay Gas)'}
-        </button>
+          {loading || submitting ? (
+            <motion.span
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 1, repeat: Infinity }}
+            >
+              Creating Proposal...
+            </motion.span>
+          ) : useGasless ? 'Create Proposal (Gasless)' : 'Create Proposal (Pay Gas)'}
+        </motion.button>
 
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <motion.p 
+          className="text-sm text-gray-600 dark:text-gray-400"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
           Note: You need at least 10% of the DAO contract balance to create a proposal.
-        </p>
-      </form>
-    </div>
+        </motion.p>
+      </motion.form>
+    </motion.div>
   );
 }

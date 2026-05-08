@@ -40,11 +40,11 @@ export async function GET(request: NextRequest) {
 
           executed.push(i);
         }
-      } catch (error: any) {
+      } catch (error) {
         console.error(`[Daemon] Error executing proposal #${i}:`, error);
         errors.push({
           id: i,
-          error: error.message || 'Unknown error'
+          error: (error as Error).message || 'Unknown error'
         });
       }
     }
@@ -57,12 +57,12 @@ export async function GET(request: NextRequest) {
       timestamp: new Date().toISOString()
     });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('[Daemon] Error:', error);
     return NextResponse.json(
       {
         error: 'Daemon execution failed',
-        message: error.message || 'Unknown error'
+        message: (error as Error).message || 'Unknown error'
       },
       { status: 500 }
     );

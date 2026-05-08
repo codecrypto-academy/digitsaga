@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Connect to blockchain
+// Connect to blockchain
     const provider = new ethers.JsonRpcProvider(RPC_URL);
     const relayer = new ethers.Wallet(RELAYER_PRIVATE_KEY, provider);
     const forwarder = new ethers.Contract(FORWARDER_ADDRESS, FORWARDER_ABI, relayer);
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
 
     // Check current nonce on forwarder
     const currentNonce = await forwarder.getNonce(forwardRequest.from);
-    console.log('🔢 Nonce verification:');
+    console.log('Nonce verification:');
     console.log('  Current nonce on forwarder:', currentNonce.toString());
     console.log('  Requested nonce:', forwardRequest.nonce);
     console.log('  From address:', forwardRequest.from);
@@ -100,9 +100,6 @@ export async function POST(request: NextRequest) {
 
     console.log('Transaction confirmed:', receipt.hash);
 
-    // Unlock the user
-    
-
     return NextResponse.json({
       success: true,
       txHash: receipt.hash,
@@ -111,12 +108,6 @@ export async function POST(request: NextRequest) {
 
   } catch (error: unknown) {
     console.error('Error relaying transaction:', error);
-
-    // Unlock the user in case of error
-    if (userAddress) {
-      userLocks.delete(userAddress);
-      console.log('🔓 Unlocked user after error:', userAddress);
-    }
 
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(

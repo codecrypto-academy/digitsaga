@@ -18,3 +18,10 @@ web/out/
 *.swp
 *.swo
 *~
+
+# Logs
+CHANGELOG.md
+ARCHITECTURE.svg
+DESIGN.svg
+CLAUDE.md
+SYSTEM_CAPABILITIES.md

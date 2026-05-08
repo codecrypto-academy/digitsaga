@@ -71,9 +71,9 @@ export default function DAOStats() {
       alert('Deposit successful!');
       setDepositAmount('');
       await loadStats();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error depositing:', err);
-      alert(err.message || 'Failed to deposit');
+      alert((err as Error).message || 'Failed to deposit');
     } finally {
       setDepositing(false);
     }
@@ -82,7 +82,7 @@ export default function DAOStats() {
   if (loading) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold mb-4 dark:text-white">DAO Treasury</h2>
+        <h2 className="text-2xl font-bold mb-4 dark:text-white">DAO Admin</h2>
         <div className="text-center py-4 text-gray-500 dark:text-gray-400">Loading...</div>
       </div>
     );
@@ -90,11 +90,16 @@ export default function DAOStats() {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-bold mb-4 dark:text-white">DAO Treasury</h2>
+      <h2 className="text-2xl font-bold mb-4 dark:text-white">DAO Admin</h2>
+      <span className="text-sm text-gray-600 dark:text-gray-400 mb-6 block">
+        View DAO stats and manage your participation. Learn more about how to interact with the DAO in the 
+        <a href="/docs" className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"> documentation
+        </a>.
+      </span>
 
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg">
-          <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Treasury Balance</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Admin Balance</div>
           <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{parseFloat(balance).toFixed(4)} ETH</div>
         </div>
         <div className="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg">

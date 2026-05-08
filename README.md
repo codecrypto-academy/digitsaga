@@ -74,11 +74,38 @@ This will verify that everything is configured correctly.
 
 ### 🎯 Use the Application
 
-1. **Connect MetaMask** - Click "Connect Wallet"
+1. **Connect MetaMask** - Click "Connect Wallet" (use account #1: `0x70997970C51812dc3A010C7d01b50e0d17dc79C8`)
 2. **Deposit ETH** - Send ETH to DAO to participate
 3. **Create Proposals** - Requires ≥10% of DAO balance
 4. **Vote** - Gasless! Relayer pays the gas
 5. **Auto-Execution** - Daemon executes approved proposals
+
+### 🔐 Meta-Transaction Design (EIP-2771)
+
+The application uses **gasless transactions** so users don't need ETH to vote:
+
+```
+User (Account #1)              Relayer (Account #0)         Contract
+    │                          │                        │
+    ├── Signs vote (off-chain) │                        │
+    ├────────────────────────>│                        │
+    │                     Signs & submits tx            │
+    │                          ├───────────────────────>│
+    │                          │                        │ (pays gas)
+    │                          │<──────────────────────┤
+    │<─────────────────────────┤                        │
+```
+
+**Why two accounts?**
+
+| Account | Address | Purpose |
+|---------|---------|---------|
+| User (#1) | `0x70997970...` | End user - connect in MetaMask |
+| Relayer (#0) | `0xf39Fd6e51...` | Server pays gas for user's votes |
+
+- **User** signs vote requests without spending gas
+- **Relayer** (server) submits the signed transaction and pays the gas fee
+- This enables a seamless gasless voting experience
 
 ---
 
@@ -152,6 +179,63 @@ cd web
 npm run build
 npm start
 ```
+
+### Versioning & Releases
+
+Current version: **0.1.2**
+
+#### Option 1: Simple (npm version)
+
+```bash
+# After making changes and committing:
+
+# Patch release (bug fixes)
+npm version patch
+
+# Minor release (new features)
+npm version minor
+
+# Major release (breaking changes)
+npm version major
+```
+
+This updates `package.json` version and creates a Git tag.
+
+#### Option 2: Automated Changelog (standard-version)
+
+```bash
+# Run automated release (auto-generates changelog from commits)
+cd web
+npm run release:auto
+```
+
+Both scripts are defined in `web/package.json`:
+
+```json
+"release": "git add -A && git commit -m 'release: v'$(npm pkg get version) && npm version patch && git push",
+"release:auto": "standard-version"
+```
+
+---
+
+#### Recommended Workflow
+
+1. Make changes
+2. Commit with descriptive messages:
+   ```
+   git commit -m "fix: resolve window.ethereum type error"
+   git commit -m "feat: add gasless voting support"
+   ```
+3. Run release:
+   - Simple: `cd web && npm run release`
+   - Automated: `cd web && npm run release:auto`
+4. Push tags: `git push --tags`
+
+---
+
+#### Changelog
+
+Changes are documented in [CHANGELOG.md](CHANGELOG.md).
 
 ## Environment Variables
 

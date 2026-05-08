@@ -389,6 +389,69 @@ function decimals() public pure returns (uint8) {
 **Síntomas:**
 ```
 Error: Call failed
+transaction execution reverted
+```
+
+**Causa:** El contrato destino no puede procesar los datos de EIP-2771 correctamente.
+
+**Solución:**
+```solidity
+// ✅ Asegurar que el contrato destino hereda de ERC2771Context
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
+
+contract DAOVoting is ERC2771Context {
+    constructor(address trustedForwarder) ERC2771Context(trustedForwarder) {}
+    
+    function createProposal(...) external returns (uint256) {
+        address sender = _msgSender(); // ← Usar _msgSender() en lugar de msg.sender
+        // ...
+    }
+}
+```
+
+---
+
+### ❌ Error: `Empty data` - Transacción con datos vacíos
+
+**Síntomas:**
+```
+transaction = { data: "", to: "0x..." }
+Error: execution reverted: "Empty data"
+```
+
+**Causa:** Transacción enviada con calldata vacía al MinimalForwarder.
+
+**Solución:**
+```solidity
+// ✅ En MinimalForwarder.sol - validar datos no vacíos
+require(req.data.length > 0, "Empty data");
+
+// ✅ También añadir receive() para aceptar ETH plano
+receive() external payable {}
+```
+
+---
+
+### ❌ Error: `Call failed` - Datos de EIP-2771 incorrectos
+
+**Síntomas:**
+```
+Error: Call failed
+```
+
+**Causa:** El MinimalForwarder no está anexando correctamente el `from` a los datos.
+
+**Solución:**
+```solidity
+// ✅ En MinimalForwarder.sol - ES NECESARIO anexar req.from
+(bool success, ) = req.to.call{value: req.value, gas: req.gas}(
+    abi.encodePacked(req.data, req.from) // ← ERC2771 requiere esto
+);
+require(success, "Call failed");
+```
+
+**Nota:** ERC2771Context.extracte el remitente de los últimos 20 bytes del calldata cuando `msg.sender` es el forwarder confiable.
+Error: Call failed
 ```
 
 **Causa:** El contrato destino no puede procesar los datos de EIP-2771
@@ -509,7 +572,8 @@ cast call $FORWARDER_ADDRESS "getNonce(address)" $USER_ADDRESS
 |-------|----------------|
 | `signature does not match` | Cambiar versión EIP-712 a `'1'` |
 | `Nonce mismatch` | Usar `forwarder.getNonce(from)` |
-| `Call failed` | Añadir `req.from` en `abi.encodePacked` |
+| `Call failed` | Añadir `req.from` en `abi.encodePacked(req.data, req.from)` |
+| `Empty data` | Validar `req.data.length > 0` + añadir `receive()` |
 | `RPC request failed` | Verificar variables de entorno |
 | `Transaction already in progress` | Esperar o reiniciar servidor |
 | `Insufficient funds` | Depositar fondos en DAO/usuario |

@@ -120,7 +120,46 @@ Usa una cuenta de Anvil que tenga fondos, o deposita al DAO primero.
 
 ---
 
-## Error: MetaMask no se conecta
+## Error: MetaTransaction "Call failed" o "Empty data"
+
+**Causas y soluciones**:
+
+### 1. Datos vacíos
+```
+transaction = { data: "", to: "0x..." }
+```
+**Solución**: El frontend no está enviando datos en la transacción. Verifica que `req.data` no esté vacío.
+
+### 2. Call failed
+```
+Error: execution reverted: "Call failed"
+```
+**Causa**: El MinimalForwarder no está anexando `req.from` correctamente.
+
+**Solución** - En `sc/src/MinimalForwarder.sol`:
+```solidity
+// ✅ DEBE anexar req.from para ERC2771
+(bool success, ) = req.to.call{value: req.value, gas: req.gas}(
+    abi.encodePacked(req.data, req.from) // ← Importante
+);
+require(success, "Call failed");
+```
+
+### 3. Validar datos no vacíos
+```solidity
+// ✅ Añadir al inicio de execute()
+require(req.data.length > 0, "Empty data");
+```
+
+### 4. Recibir ETH plano
+```solidity
+// ✅ Añadir receive()
+receive() external payable {}
+```
+
+---
+
+## Error: "Invalid nonce" MetaMask no se conecta
 
 **Solución**:
 
@@ -213,7 +252,20 @@ cat .env.local
 ls -la src/lib/*.abi.json
 ```
 
-### 4. Rebuild everything
+### 4. Check contract addresses in .env.local match deployed
+```bash
+# After deploy, verify addresses match
+cat web/.env.local
+# Compare with deployment output
+```
+
+### 5. Verify forwarder nonce
+```bash
+# Check forwarder nonce for user (must match)
+cast call $FORWARDER_ADDRESS "getNonce(address)" $USER_ADDRESS
+```
+
+### 6. Rebuild everything
 ```bash
 # Desde el root
 ./deploy-local.sh
@@ -269,6 +321,25 @@ anvil  # en otra terminal
 cd web
 npm run dev
 ```
+
+---
+
+## EIP-2771 Meta-Transaction Flow
+
+El sistema usa EIP-2771 para permitir transacciones sin gas:
+
+1. **Usuario firma** una solicitud de meta-transacción ( ForwardRequest )
+2. **Frontend envía** la solicitud firmada al endpoint `/api/relay`
+3. **Relayer** ejecuta `MinimalForwarder.execute(request, signature)`
+4. **MinimalForwarder**:
+   - Verifica la firma
+   - Incrementa el nonce del usuario
+   - Llama al contrato destino con los datos + `req.from` anexado
+5. **DAOVoting** (hereda de ERC2771Context):
+   - Extrae el remitente original de los últimos 20 bytes del calldata
+   - Usa `_msgSender()` en lugar de `msg.sender`
+
+**Dirección del relayer**: `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266` (cuenta Anvil #0)
 
 ---
 
