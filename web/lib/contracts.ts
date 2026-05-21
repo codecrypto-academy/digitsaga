@@ -1,0 +1,17 @@
+// Smart contract addresses (populated by deploy.sh)
+export const ESCROW_ADDRESS = process.env.NEXT_PUBLIC_ESCROW_ADDRESS || '';
+export const TOKEN_A_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_A_ADDRESS || '';
+export const TOKEN_B_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_B_ADDRESS || '';
+export const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || '31337', 10);
+
+// Escrow contract ABI (will be populated in Phase 2)
+export const ESCROW_ABI = [];
+
+// ERC20 contract ABI
+export const ERC20_ABI = [
+  'function balanceOf(address account) external view returns (uint256)',
+  'function approve(address spender, uint256 amount) external returns (bool)',
+  'function transfer(address to, uint256 amount) external returns (bool)',
+  'function transferFrom(address from, address to, uint256 amount) external returns (bool)',
+  'function allowance(address owner, address spender) external view returns (uint256)',
+];

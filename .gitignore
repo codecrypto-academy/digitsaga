@@ -1,0 +1,48 @@
+# Foundry
+/out/
+/cache/
+.foundry/
+
+# Next.js
+/web/.next/
+/web/node_modules/
+/web/.env.local
+/web/dist/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.iml
+.DS_Store
+
+# Artifacts
+*.log
+deployment-info.txt
+*.out
+
+# Node/npm
+node_modules/
+package-lock.json
+yarn.lock
+.npm
+.eslintcache
+
+# Build artifacts
+dist/
+build/
+
+# Testing
+coverage/
+.nyc_output/
+
+# OS
+Thumbs.db
+.DS_Store
