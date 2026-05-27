@@ -7,7 +7,7 @@ export interface Operation {
   tokenB: string;
   amountA: bigint;
   amountB: bigint;
-  status: number; // 0=PENDING, 1=COMPLETED, 2=CANCELLED
+  status: bigint; // 0=PENDING, 1=COMPLETED, 2=CANCELLED
 }
 
 export interface ContractAddresses {

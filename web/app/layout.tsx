@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { EthereumProvider } from '@/lib/ethereum';
 
 export const metadata: Metadata = {
   title: 'ESCROW DApp - Secure Token Swaps',
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <EthereumProvider>
+          {children}
+        </EthereumProvider>
       </body>
     </html>
   );

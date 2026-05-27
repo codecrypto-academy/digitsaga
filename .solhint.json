@@ -2,12 +2,27 @@
   "extends": "solhint:all",
   "rules": {
     "compiler-version": ["error", "^0.8.0"],
-    "func-visibility": ["error"],
+    "func-visibility": ["warn", { "ignoreConstructors": true }],
     "const-name-snakecase": "error",
-    "line-length": ["error", 120],
+    "line-length": "off",
     "no-console": "warn",
     "state-visibility": "error",
     "no-unused-vars": "error",
-    "no-global-import-in-non-library": "off"
+    "no-global-import-in-non-library": "off",
+    "foundry-test-functions": "off",
+    "foundry-test-function-naming": "off",
+    "comprehensive-interface": "off",
+    "gas-custom-errors": "off",
+    "gas-named-return-values": "off",
+    "gas-increment-by-one": "off",
+    "gas-length-in-loops": "off",
+    "gas-strict-inequalities": "off",
+    "gas-small-strings": "off",
+    "named-parameters-mapping": "off",
+    "ordering": "off",
+    "reason-string": "off",
+    "imports-order": "off",
+    "no-global-import": "off",
+    "use-natspec": "off"
   }
 }

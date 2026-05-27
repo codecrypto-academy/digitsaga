@@ -46,3 +46,8 @@ coverage/
 # OS
 Thumbs.db
 .DS_Store
+
+# Misc
+PHASE_*
+VIDEO_DEMO_SCRIPT.md
+BLUEPRINT.md 

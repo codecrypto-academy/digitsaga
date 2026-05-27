@@ -61,7 +61,7 @@ ESCROW/
 │   ├── src/
 │   │   ├── Escrow.sol      # Main escrow contract
 │   │   ├── TokenA.sol      # Test ERC20 token
-│   │   └── TokenB.sol      # Test ERC20 token
+│   │   └── TokenB.sol      # Test ERC20 token 
 │   ├── test/               # Foundry tests
 │   └── foundry.toml        # Foundry config
 │

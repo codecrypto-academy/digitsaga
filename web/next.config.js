@@ -4,6 +4,8 @@ const nextConfig = {
   experimental: {
     esmExternals: true,
   },
+  // Prevent workspace root detection warnings when multiple lockfiles exist
+  outputFileTracingRoot: __dirname,
 };
 
 module.exports = nextConfig;

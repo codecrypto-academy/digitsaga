@@ -25,9 +25,22 @@ anvil --host 0.0.0.0
 # Listening on 0.0.0.0:8545
 ```
 
+If Anvil is running in a container, use the following command to start it:
+If Anvil is already running, you can skip this step. and proceed to the next steps.
+
+```bash
+podman run -d --name anvil-local-container -p 8545:8545 anvil:latest --host      
+```
+
+
 **Important**: Keep Anvil running in a separate terminal. Leave it running during development.
 
 ### Anvil Accounts
+
+List Accounts and Private Keys 
+```bash
+podman logs anvil-local-container 2>&1 | grep -A 30 "Available Accountss"
+```
 
 Anvil provides 10 test accounts with 10,000 ETH each. These are displayed when Anvil starts:
 
