@@ -1,5 +1,9 @@
 # ESCROW DApp
 
+# ESCROW DApp
+
+[LinkedIn Post Reference](https://www.linkedin.com/posts/gabriel-rodriguez-potencial_web3-ugcPost-7465248571483639809-HssU/?utm_source=share&utm_medium=member_desktop&rcm=ACoAABGu8tIBASkBMFxJ5-HGfNyKAHWvHmbnjRg)
+
 A decentralized application (DApp) for secure peer-to-peer token swaps using an Escrow smart contract on the Ethereum blockchain.
 
 ## 🎯 Features
